@@ -1,0 +1,12 @@
+Find test arguments:
+stack test --test-arguments '--help'
+(shortcut for --test-arguments is --ta)
+
+Run:
+stack test --ta '--match "Task3: subList"'
+(in Bash, everything in single quotes are literals, including ")
+(shortcut for --match is -m)
+
+or with path to the test:
+stack test --ta '-m "/Chapter2/Chapter2Normal/Task3: subList"'
+(or deeper/shorter path)
