@@ -8,5 +8,11 @@ stack test --ta '--match "Task3: subList"'
 (shortcut for --match is -m)
 
 or with path to the test:
-stack test --ta '-m "/Chapter2/Chapter2Normal/Task3: subList"'
+stack test --ta '-m "/Chapter2/Chapter2Normal/Task11: rotate"'
 (or deeper/shorter path)
+
+stack test --ta '-m /Chapter2/Chapter2Advanced'
+
+
+https://softwareengineering.stackexchange.com/a/259903
+https://stackoverflow.com/a/2196592/12599584
