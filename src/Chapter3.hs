@@ -52,6 +52,7 @@ provide more top-level type signatures, especially when learning Haskell.
 {-# LANGUAGE InstanceSigs #-}
 
 module Chapter3 where
+-- import Chapter3 (MealType(Dinner)) -- what's this?
 
 {-
 =🛡= Types in Haskell
@@ -384,17 +385,33 @@ after the fight. The battle has the following possible outcomes:
    doesn't earn any money and keeps what they had before.
 
 -}
-data Combatant = CreateCombatant
+data Combatant = Combatant
     { health :: Int
     , attack :: Int
     , gold :: Int
     } deriving (Show)
 
+{- 
+In case of some other languages like Python I can easily do if - return
+constructions. But here I: a) dont know how to do such thing; b) dont want to
+Therefore the question is: can we perform the second fight _unconditionally_,
+regardles of monster died on the first step or no...
+
+The answer is "yes", we need to add monster's attack to the knight's health and
+the second fight (with pseudo-monster) will have no affect on knight in this case
+
+Thus if the knight's health:
+- did not changed = monster was killed
+- <= 0 = knight was killed
+- still positive = nobody was killed
+
+Sorry for such cumbersome solution
+-}
 fight :: Combatant -> Combatant -> Int
 fight monster knight
     | health knightAfterPhaseTwo == health knight = gold knight + gold monster  -- monster was killed
     | health knightAfterPhaseTwo <= 0 = -1  -- knight was killed
-    | health knightAfterPhaseTwo > 0 = gold knight  -- nobody was killed
+    | otherwise = gold knight  -- nobody was killed
     where
         healthAfterFirst = if (health monster - attack knight) <= 0
             then health knight + attack monster
@@ -488,6 +505,12 @@ and provide more flexibility when working with data types.
 Create a simple enumeration for the meal types (e.g. breakfast). The one who
 comes up with the most number of names wins the challenge. Use your creativity!
 -}
+data MealType
+    = Breakfast
+    | Lunch
+    | Dinner
+    | Supper
+    deriving Show
 
 {- |
 =⚔️= Task 4
@@ -508,6 +531,19 @@ After defining the city, implement the following functions:
    complicated task, walls can be built only if the city has a castle
    and at least 10 living __people__ inside in all houses of the city in total.
 -}
+
+data Castle = Castle { castleName :: String, hasWall :: Bool } deriving (Show)
+data Clerical = Church | Library deriving (Show)
+data House = House { habitants :: Int}
+
+data City
+    = LargeCity { castle :: Castle, clerical :: Clerical, houses :: [House] }
+    | SmallCity { clerical :: Clerical, houses :: [House] }
+
+cityS :: City
+cityL :: City
+cityS = SmallCity Church [House 3]
+cityL = LargeCity (Castle "Berdyansk" True) Library [House 4, House 4]
 
 {-
 =🛡= Newtypes
